@@ -2,15 +2,24 @@ pipeline {
     agent any
 
     options {
-        buildDiscarder(logRotator(numToKeepStr: '5'))  // syntaxe correcte
+        buildDiscarder(logRotator(numToKeepStr: '5'))
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                // Nettoyage du workspace
+                deleteDir()
+                checkout scm
+            }
+        }
+
         stage('SonarQube Scan') {
             steps {
-                // Le nom doit correspondre exactement à celui configuré dans Jenkins → "sq1"
                 withSonarQubeEnv('sq1') {
-                    // Commande correcte avec maven wrapper
+                    // ✅ Donner les droits d’exécution à mvnw
+                    sh 'chmod +x mvnw'
+                    // ✅ Exécution du build et analyse
                     sh './mvnw clean verify sonar:sonar -Dsonar.projectKey=devops-TpFoyer'
                 }
             }
