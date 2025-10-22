@@ -7,10 +7,10 @@ pipeline {
   }
 
   environment {
-    // 🔹 Ton token SonarQube (Secret Text dans Jenkins → Credentials → ID = 'jenkins-sonar')
+    // 🔹 token SonarQube (Secret Text dans Jenkins → Credentials → ID = 'jenkins-sonar')
     SONAR_TOKEN = credentials('jenkins-sonar')
 
-    // 🔹 Adresse de ton SonarQube (remplace par la tienne si différente)
+    // 🔹 Adresse de  SonarQube 
     SONAR_HOST = 'http://192.168.33.10:9000'
   }
 
@@ -18,7 +18,6 @@ pipeline {
 
     stage('Checkout') {
       steps {
-        // clone ton dépôt GitHub (le tien, pas celui de ton amie)
         git branch: 'main', url: 'https://github.com/LamouriEya/devops-TpFoyer.git'
       }
     }
