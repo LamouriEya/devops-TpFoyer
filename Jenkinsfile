@@ -7,8 +7,8 @@ pipeline {
   }
 
   environment {
-    // 🔹 token SonarQube (Secret Text dans Jenkins → Credentials → ID = 'jenkins-sonar')
-    SONAR_TOKEN = credentials('jenkins-sonar')
+    // 🔹 token SonarQube (Secret Text dans Jenkins → Credentials → ID = 'sonar-token')
+    SONAR_TOKEN = credentials('sonar-token')
 
     // 🔹 Adresse de  SonarQube 
     SONAR_HOST = 'http://192.168.33.10:9000'
