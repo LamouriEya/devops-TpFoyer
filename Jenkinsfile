@@ -12,6 +12,9 @@ pipeline {
 
     // 🔹 Adresse de  SonarQube 
     SONAR_HOST = 'http://192.168.33.10:9000'
+
+    DOCKER_CREDENTIALS = 'dockerhub-login'
+    DOCKER_IMAGE = 'eyalamouri/foyer-backend'
   }
 
   stages {
@@ -70,6 +73,27 @@ pipeline {
         archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
       }
     }
+    stage('Build Docker Image') {
+        steps {
+            script {
+                env.IMAGE_TAG = "${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                sh "docker build -t ${IMAGE_TAG} ."
+            }
+        }
+    }
+
+    stage('Push Docker Image') {
+        steps {
+            withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                sh """
+                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    docker push ${IMAGE_TAG}
+                    docker logout
+                """
+            }
+        }
+    }
+
   }
 
   post {

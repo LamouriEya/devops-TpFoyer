@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foyer-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foyer-app
+  template:
+    metadata:
+      labels:
+        app: foyer-app
+    spec:
+      containers:
+        - name: foyer-app
+          image: lamouri/foyer-backen:lastest
+          ports:
+            - containerPort: 8089
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql:3306/foyer_db?useSSL=false&serverTimezone=UTC
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-user
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-password
+
