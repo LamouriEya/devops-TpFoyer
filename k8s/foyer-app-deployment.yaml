@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: foyer-app
-          image: eyalamouri/foyer-backen:<LAST_BUILD>
+          image: eyalamouri/foyer-backend:latest
           ports:
             - containerPort: 8089
           env:
